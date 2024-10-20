@@ -31,7 +31,6 @@ const productSchema = new mongoose.Schema({
     date: {
         type: String
     }
-
 })
 
 const Product = mongoose.model("Product", productSchema)

@@ -244,6 +244,44 @@ const productController = {
         } catch (error) {
             res.json({ success: false, message: "Something went wrong", error: error.message });
         }
+    },
+
+    // purchase
+    purchaseProduct: async (req, res) => {
+        try {
+            const { email, productId, token, amount } = req.body; // 'token' from the client-side Stripe process
+
+            // Step 1: Process payment with Stripe
+            const charge = await stripe.charges.create({
+                amount: amount, // Amount in cents
+                currency: "usd", // Specify your currency
+                source: token, // Token from the front-end Stripe checkout
+                description: `Purchased product ${productId} by ${email}`
+            });
+
+            if (!charge) {
+                return res.status(500).json({ success: false, message: "Payment failed" });
+            }
+
+            // Step 2: If payment is successful, save the purchase details to MongoDB
+            const purchasedProduct = new PurchasedProduct({
+                email,
+                productId,
+                date: getFormattedDate()
+            });
+
+            const savedPurchase = await purchasedProduct.save();
+
+            if (!savedPurchase) {
+                return res.status(500).json({ success: false, message: "Failed to save purchase details" });
+            }
+
+            // Step 3: Respond to the client with success
+            res.json({ success: true, message: "Payment successful and purchase recorded", data: savedPurchase });
+        } catch (error) {
+            console.error("Error during purchase process:", error);
+            res.status(500).json({ success: false, message: "Something went wrong", error: error.message });
+        }
     }
 }
 

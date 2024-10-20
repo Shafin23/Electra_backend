@@ -6,4 +6,4 @@ const router = express.Router();
 router.post("/add", wishListController.addToWishList)
 router.delete("/remove", wishListController.removeProductFromWishList)
 
-module.exports = { router }
+module.exports = router
