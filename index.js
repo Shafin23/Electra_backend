@@ -12,8 +12,16 @@ const product = require("./routers/product")
 const contactUs = require("./routers/contactUs")
 const wishList = require("./routers/wishList")
 
+const corsOptions = {
+    origin: "http://localhost:5174", // Replace with your frontend URL
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true, // If you're dealing with cookies or sessions
+    optionsSuccessStatus: 200 // For older browsers
+};
+
+
 // middleware
-app.use(cors())
+app.use(cors(corsOptions));
 app.use(express.json()); // To parse JSON request bodies
 
 // connect with mongodb
