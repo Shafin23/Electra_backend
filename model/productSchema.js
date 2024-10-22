@@ -30,6 +30,9 @@ const productSchema = new mongoose.Schema({
     },
     date: {
         type: String
+    },
+    category:{
+        type: String
     }
 })
 

@@ -21,7 +21,8 @@ const productController = {
                 description,
                 stockNumber,
                 discount,
-                isDiscountAvailable
+                isDiscountAvailable,
+                category
             } = req.body;
 
             const productImg = [...files];
@@ -36,7 +37,8 @@ const productController = {
                 stockNumber,
                 discount,
                 productImg,
-                isDiscountAvailable
+                isDiscountAvailable,
+                category
             })
             const newProductAdded = await newProduct.save();
 
